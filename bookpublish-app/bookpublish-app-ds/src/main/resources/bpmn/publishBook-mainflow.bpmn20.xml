@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="publishBookTransMainflow" name="publishBookTransMainflow" isExecutable="true">
+    <startEvent id="theStart" name="Start"></startEvent>
+    <callActivity id="publishReview" name="Publish Review" calledElement="publishBookTransSubflow">
+      <extensionElements>
+        <activiti:in source="publishTrans" target="publishTransBean"></activiti:in>
+        <activiti:in source="publishReviewProcessIsIndependent" target="indenpendentProcess"></activiti:in>
+        <activiti:out source="bookReviewOk" target="publishTransReviewStatus"></activiti:out>
+        <activiti:out source="publishTransBean" target="publishTrans"></activiti:out>
+      </extensionElements>
+    </callActivity>
+    <userTask id="dataEntry" name="Data Entry"></userTask>
+    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="dataEntry"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="dataEntry" targetRef="publishReview">
+      <extensionElements>
+        <activiti:executionListener event="take" expression="#{publishBookTransitionListener.execute(execution)}"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="publishReview" targetRef="exclusivegateway2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="dataEntry">
+      <extensionElements>
+        <activiti:executionListener event="take" expression="#{publishBookTransitionListener.execute(execution)}"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 0}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="theEnd" name="End"></endEvent>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="theEnd">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="rejectedEnd">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 1}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="publishDecision" name="Publish Decision"></userTask>
+    <sequenceFlow id="flow10" sourceRef="publishDecision" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow11" sourceRef="exclusivegateway2" targetRef="rejectedEnd">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${publishTransReviewStatus==2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="publishDecision">
+      <extensionElements>
+        <activiti:executionListener event="take" expression="#{publishBookTransitionListener.execute(execution)}"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${publishTransReviewStatus==0}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="rejectedEnd" name="RejectedEnd">
+      <terminateEventDefinition></terminateEventDefinition>
+    </endEvent>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_publishBookTransMainflow">
+    <bpmndi:BPMNPlane bpmnElement="publishBookTransMainflow" id="BPMNPlane_publishBookTransMainflow">
+      <bpmndi:BPMNShape bpmnElement="dataEntry" id="BPMNShape_dataEntry">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishReview" id="BPMNShape_publishReview">
+        <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishDecision" id="BPMNShape_publishDecision">
+        <omgdc:Bounds height="55.0" width="105.0" x="575.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="607.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theStart" id="BPMNShape_theStart">
+        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theEnd" id="BPMNShape_theEnd">
+        <omgdc:Bounds height="35.0" width="35.0" x="760.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="500.0" y="117.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="rejectedEnd" id="BPMNShape_rejectedEnd">
+        <omgdc:Bounds height="35.0" width="35.0" x="760.0" y="280.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="155.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="305.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="465.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="607.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="252.0" y="219.0"></omgdi:waypoint>
+        <omgdi:waypoint x="252.0" y="165.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="627.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="777.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="627.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="777.0" y="280.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="627.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="627.0" y="200.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="520.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="297.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="540.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
