@@ -78,6 +78,7 @@ public class PublishTransSupport {
 		if (activitiFacade.ifProcessFinishted(publishTransNo,
 				mainProcessDefinitionId)) {
 			LOGGER.info("process stopped..");
+
 			ProcessActivityDto endActivity = activitiFacade.getLastActivity(
 					mainProcessInstanceId, mainProcessDefinitionId);
 			LOGGER.info("end activity:{} ", endActivity);

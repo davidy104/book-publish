@@ -31,19 +31,17 @@ if(book.price &lt; 100){
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bookReviewOk == 0}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="manualReview" targetRef="exclusivegateway2"></sequenceFlow>
-    <endEvent id="terminateendevent1" name="TerminateEndEvent">
-      <terminateEventDefinition></terminateEventDefinition>
-    </endEvent>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow8" sourceRef="exclusivegateway2" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bookReviewOk == 0}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway2" targetRef="terminateendevent1">
+    <sequenceFlow id="flow9" sourceRef="exclusivegateway2" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bookReviewOk == 2}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow10" sourceRef="exclusivegateway1" targetRef="terminateendevent1">
+    <sequenceFlow id="flow10" sourceRef="exclusivegateway1" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bookReviewOk == 2}]]></conditionExpression>
     </sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_publishBookTransSubflow">
     <bpmndi:BPMNPlane bpmnElement="publishBookTransSubflow" id="BPMNPlane_publishBookTransSubflow">
@@ -62,11 +60,11 @@ if(book.price &lt; 100){
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="750.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="terminateendevent1" id="BPMNShape_terminateendevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="880.0" y="120.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="747.0" y="117.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="840.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="362.0" y="137.0"></omgdi:waypoint>
@@ -95,14 +93,14 @@ if(book.price &lt; 100){
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="787.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="880.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="840.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="450.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="450.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="668.0" y="73.0"></omgdi:waypoint>
-        <omgdi:waypoint x="898.0" y="73.0"></omgdi:waypoint>
-        <omgdi:waypoint x="897.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="857.0" y="73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="857.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

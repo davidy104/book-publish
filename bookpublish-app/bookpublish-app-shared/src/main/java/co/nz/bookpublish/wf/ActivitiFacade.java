@@ -207,7 +207,7 @@ public class ActivitiFacade {
 				.createHistoricActivityInstanceQuery()
 				.processInstanceId(processInstanceId)
 				.processDefinitionId(processDefinitionId)
-				.orderByHistoricActivityInstanceEndTime().desc().singleResult();
+				.orderByHistoricActivityInstanceEndTime().desc().list().get(0);
 
 		if (LastEndhistoricActivityInstance != null) {
 			ProcessActivityDto processActivityDto = ProcessActivityDto
@@ -252,10 +252,11 @@ public class ActivitiFacade {
 						historicActivityInstance.getEndTime()).build();
 
 				if (historicActivityInstance.getDurationInMillis() != null) {
-					processActivityDto.setDuration(GeneralUtils
-							.formatLongToTimeStr(historicActivityInstance
-									.getDurationInMillis()));
+//					processActivityDto.setDuration(GeneralUtils
+//							.formatLongToTimeStr(historicActivityInstance
+//									.getDurationInMillis()));
 				}
+				LOGGER.info("historic processActivityDto:{} ",processActivityDto);
 				results.add(processActivityDto);
 			}
 		}

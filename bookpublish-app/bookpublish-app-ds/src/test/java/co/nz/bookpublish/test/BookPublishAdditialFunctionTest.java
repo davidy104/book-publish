@@ -2,6 +2,7 @@ package co.nz.bookpublish.test;
 
 import javax.annotation.Resource;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import co.nz.bookpublish.data.WorkflowDto;
 import co.nz.bookpublish.ds.WorkflowDS;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApplicationConfiguration.class})
+@Ignore
 public class BookPublishAdditialFunctionTest {
 
 	private static final Logger LOGGER = LoggerFactory
@@ -32,10 +34,9 @@ public class BookPublishAdditialFunctionTest {
 				mainflowDefinitionKey, category);
 		LOGGER.info("get mainflow:{} ", workflow);
 
-		workflow = workflowDs.getWorkflowByNameAndCategory(subflowDefinitionKey, category);
+		workflow = workflowDs.getWorkflowByNameAndCategory(
+				subflowDefinitionKey, category);
 		LOGGER.info("get subflow:{} ", workflow);
 	}
-
-
 
 }

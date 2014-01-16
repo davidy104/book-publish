@@ -10,7 +10,6 @@
 	</parent>
 
 	<artifactId>bookpublish-app-shared</artifactId>
-
 	<name>bookpublish-app-shared</name>
 
 	<dependencies>
